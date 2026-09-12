@@ -1,11 +1,27 @@
 import sys
 import os
+import re
 import subprocess
 import yt_dlp
 
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LOCAL_FFMPEG_DIR = os.path.join(SCRIPT_DIR, "ffmpeg", "bin")
+
+
+def sanitize_filename(filename, max_length=200):
+    """清理文件名中的非法字符"""
+    # 移除 Windows 非法字符: \ / : * ? " < > |
+    # 同时也处理 Unix 中的 / 和 NULL 字符
+    illegal_chars = r'[\\/:*?"<>|\x00-\x1f\r\n]'
+    safe_name = re.sub(illegal_chars, '_', filename)
+    # 移除开头和结尾的空格和点号（Windows 不允许）
+    safe_name = safe_name.strip(' .')
+    # 限制长度
+    if len(safe_name) > max_length:
+        safe_name = safe_name[:max_length]
+    # 如果文件名为空，返回默认名称
+    return safe_name if safe_name else "untitled"
 
 
 def find_ffmpeg():
@@ -87,6 +103,7 @@ def download_video(url, output_folder="downloads"):
         "no_warnings": False,
         "continuedl": True,
         "fail_on_missing_subtitles": False,
+        "restrictfilenames": True,
     }
 
     if ffmpeg_location:
