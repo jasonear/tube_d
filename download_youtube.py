@@ -10,13 +10,17 @@ LOCAL_FFMPEG_DIR = os.path.join(SCRIPT_DIR, "ffmpeg", "bin")
 
 def find_ffmpeg():
     local_ffmpeg = os.path.join(LOCAL_FFMPEG_DIR, "ffmpeg.exe")
-    if os.path.exists(local_ffmpeg):
+    local_ffprobe = os.path.join(LOCAL_FFMPEG_DIR, "ffprobe.exe")
+    if os.path.exists(local_ffmpeg) and os.path.exists(local_ffprobe):
         print(f"检测到本地 ffmpeg: {local_ffmpeg}")
+        print(f"检测到本地 ffprobe: {local_ffprobe}")
         return LOCAL_FFMPEG_DIR
 
     try:
-        result = subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True, text=True)
-        print(f"检测到系统 ffmpeg: {result.stdout.splitlines()[0]}")
+        ffmpeg_result = subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True, text=True)
+        ffprobe_result = subprocess.run(["ffprobe", "-version"], capture_output=True, check=True, text=True)
+        print(f"检测到系统 ffmpeg: {ffmpeg_result.stdout.splitlines()[0]}")
+        print(f"检测到系统 ffprobe: {ffprobe_result.stdout.splitlines()[0]}")
         return None
     except subprocess.CalledProcessError:
         return None
@@ -70,12 +74,13 @@ def download_video(url, output_folder="downloads"):
     ffmpeg_location = ensure_ffmpeg()
 
     ydl_opts = {
-        "format": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+        "format": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=1080][ext=webm]+bestaudio[ext=webm]/best[ext=mp4]/best",
         "outtmpl": f"{output_folder}/%(title)s.%(ext)s",
         "noplaylist": True,
         "writethumbnail": True,
         "writesubtitles": True,
         "subtitleslangs": ["zh-Hans", "zh-Hant", "en"],
+        "subtitlesformat": "srt",
         "merge_output_format": "mp4",
         "quiet": False,
         "no_warnings": False,
