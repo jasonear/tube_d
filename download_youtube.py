@@ -1,6 +1,7 @@
 import sys
 import os
 import re
+import time
 import subprocess
 import yt_dlp
 
@@ -84,7 +85,7 @@ def install_dependencies():
         import yt_dlp
 
 
-def download_video(url, output_folder="downloads"):
+def download_video(url, output_folder="downloads", max_retries=3):
     os.makedirs(output_folder, exist_ok=True)
 
     ffmpeg_location = ensure_ffmpeg()
@@ -104,20 +105,31 @@ def download_video(url, output_folder="downloads"):
         "continuedl": True,
         "fail_on_missing_subtitles": False,
         "restrictfilenames": True,
+        "retries": max_retries,
     }
 
     if ffmpeg_location:
         ydl_opts["ffmpeg_location"] = ffmpeg_location
 
-    try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
-            title = info.get("title", "Unknown")
-            print(f"\n下载完成: {title}")
-            print(f"保存位置: {output_folder}/")
-    except Exception as e:
-        print(f"\n下载失败: {e}")
-        sys.exit(1)
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"开始下载 (第 {attempt} 次尝试)...")
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=True)
+                title = info.get("title", "Unknown")
+                print(f"\n下载完成: {title}")
+                print(f"保存位置: {output_folder}/")
+            return
+        except Exception as e:
+            error_msg = str(e)
+            if attempt < max_retries:
+                wait_time = attempt * 5
+                print(f"\n下载失败: {error_msg}")
+                print(f"将在 {wait_time} 秒后重试...")
+                time.sleep(wait_time)
+            else:
+                print(f"\n下载失败 (已重试 {max_retries} 次): {error_msg}")
+                sys.exit(1)
 
 
 def main():
