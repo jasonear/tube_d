@@ -4,7 +4,7 @@
 
 ## 在线文档
 
-📖 [完整文档站点](docs/index.html) - 交互式文档页面（点击直接打开）
+📖 [完整文档站点](https://jasonear.github.io/tube_d/) - 交互式文档页面（在线浏览）
 
 ---
 
