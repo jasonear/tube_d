@@ -81,9 +81,12 @@ def download_video(url, output_folder="downloads"):
         "writesubtitles": True,
         "subtitleslangs": ["zh-Hans", "zh-Hant", "en"],
         "subtitlesformat": "srt",
+        "skip_unavailable_fragments": True,
         "merge_output_format": "mp4",
         "quiet": False,
         "no_warnings": False,
+        "continuedl": True,
+        "fail_on_missing_subtitles": False,
     }
 
     if ffmpeg_location:
