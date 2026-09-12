@@ -153,7 +153,7 @@
         /* Hero 区域 */
         .hero {
             text-align: center;
-            padding: 80px 0;
+            padding: 80px 0 40px;
             border-bottom: 1px solid var(--border);
             margin-bottom: 48px;
         }
@@ -196,6 +196,32 @@
             display: flex;
             gap: 16px;
             justify-content: center;
+        }
+
+        /* 图片样式 */
+        .hero-image {
+            margin-top: 48px;
+            max-width: 100%;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .image-showcase {
+            margin: 32px 0;
+            text-align: center;
+        }
+
+        .image-showcase img {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .image-caption {
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--text-muted);
+            font-style: italic;
         }
 
         .btn {
@@ -549,6 +575,12 @@
                     <a href="#quick-start" class="btn btn-primary">快速开始</a>
                     <a href="https://github.com/jasonear/tube_d" target="_blank" class="btn btn-secondary">GitHub 仓库</a>
                 </div>
+                
+                <!-- Hero 插图 -->
+                <div class="image-showcase">
+                    <img src="images/hero-illustration.svg" alt="Tube Downloader 界面预览" class="hero-image">
+                    <div class="image-caption">🖥️ 实时下载进度展示 - 支持批量并发下载</div>
+                </div>
             </div>
 
             <!-- 功能特性 -->
@@ -629,6 +661,12 @@
             <section id="quick-start">
                 <h2>快速开始</h2>
 
+                <!-- 下载流程图 -->
+                <div class="image-showcase">
+                    <img src="images/workflow.svg" alt="下载流程示意图">
+                    <div class="image-caption">📋 简单的四步完成视频下载</div>
+                </div>
+
                 <h3>1. 克隆项目</h3>
                 <pre><code class="language-bash">git clone https://github.com/jasonear/tube_d.git
 cd tube_d</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
@@ -657,6 +695,12 @@ source venv/bin/activate</code><button class="copy-btn" onclick="copyCode(this)"
             <!-- 使用方法 -->
             <section id="usage">
                 <h2>使用方法</h2>
+
+                <!-- 架构图 -->
+                <div class="image-showcase">
+                    <img src="images/architecture.svg" alt="系统架构图">
+                    <div class="image-caption">🏗️ Tube Downloader 系统架构 - yt-dlp + FFmpeg 协同工作</div>
+                </div>
 
                 <h3>基础用法</h3>
                 <pre><code class="language-bash"># 下载单个视频（默认参数）
@@ -749,6 +793,12 @@ python download_youtube.py --max-size 2GB url</code><button class="copy-btn" onc
                 <h4>仅预览视频信息</h4>
                 <pre><code class="language-bash"># 查看视频信息但不下载
 python download_youtube.py --preview-only https://www.youtube.com/watch?v=xxxxx</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+                <!-- 预览效果演示 -->
+                <div class="image-showcase">
+                    <img src="images/preview-demo.svg" alt="视频预览效果">
+                    <div class="image-caption">👁️ 预览模式 - 下载前查看视频详细信息</div>
+                </div>
 
                 <h4>跳过预览直接下载</h4>
                 <pre><code class="language-bash"># 不显示视频信息预览，直接开始下载
